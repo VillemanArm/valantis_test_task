@@ -15,59 +15,86 @@ class App extends React.Component {
             idList: [],
             url: `http://api.valantis.store:40000/`,
             headers: {},
-            goods: []
+            items: [],
+            pages: 0,
+            currentPage: 1,
+
         };
 
+        
         this.getIdList = this.getIdList.bind(this);
         this.getItems = this.getItems.bind(this);
         this.generateHashKey = this.generateHashKey.bind(this);
 
-        // )
     }
+
 
     async componentDidMount() {
         await this.setState({ headers: { 'X-Auth': this.generateHashKey() }})
         await this.getIdList();
+        this.setState({pages: this.state.pages + 1})
 
     }
 
-    // componentDidUpdate(prevProps, prevState) {
-    //     if (prevState.idList !== this.state.idList) {
-    //         this.getGoods();
-    //     }
-    // }
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.pages !== this.state.pages) {
+            this.getItems();
+        }
+
+    }
 
     async getIdList() {
         const body = { 	
             "action": "get_ids",
-	        "params": {"offset": 0, "limit": 50} 
+	        // "params": {"offset": 0, "limit": 1963} 
         }
 
         await axios
             .post(this.state.url, body, {headers: this.state.headers})
             .then(async (res) => {
-                await this.setState({ idList: [...res.data.result] })
-                console.log(this.state.idList)
+                const idList = new Set([...res.data.result])
+                await this.setState({ idList: [...idList] })
             })
             .catch((err) => console.log(err));
     }
 
-    async getItems() {
+    async getItems() {    
 
-        const body = { 	
-            "action": "get_items",
-            "params": {"ids": this.state.idList}
+        const limit = 60
+        const startQuery = this.state.items.length
+        const finishQuery = this.state.pages * limit
+
+        if (startQuery < finishQuery) {
+            const body = { 	
+                "action": "get_items",
+                "params": {"ids": this.state.idList.slice(startQuery, finishQuery)}
+            }
+            
+            await axios
+                .post(this.state.url, body, {headers: this.state.headers})
+                .then(async (res) => {
+                    const uniqueItems = this.filterUniqueItems(res.data.result)
+                    await this.setState({ items: [...this.state.items, ...uniqueItems] })
+                })
+                .catch((err) => console.log(err));
         }
-        console.log('getGoods')
-
-        await axios
-            .post(this.state.url, body, {headers: this.state.headers})
-            .then(async (res) => {
-                await this.setState({ goods: [...res.data.result] })
-                // console.log(res.data.result)
-            })
-            .catch((err) => console.log(err));
     }
+
+    filterUniqueItems(itemsArr) {
+        const uniqueIds = new Set();
+
+        const uniqueItems = itemsArr.filter(item => {
+        if (!uniqueIds.has(item.id)) {
+            uniqueIds.add(item.id);
+            return true;
+        }
+        return false;
+        });
+
+        return uniqueItems
+    }
+
+
 
     generateHashKey() {
         let timeStamp = new Date()
@@ -80,7 +107,7 @@ class App extends React.Component {
             <React.StrictMode>
                 <Header />
                 <main>
-                <ItemsList/>
+                    <ItemsList items={this.state.items.slice((this.state.currentPage - 1) * 50, this.state.currentPage * 50)}/>
                 </main>
                 {/* <Footer /> */}
             </React.StrictMode>

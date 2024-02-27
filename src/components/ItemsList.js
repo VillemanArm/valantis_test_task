@@ -1,4 +1,5 @@
 import React from "react";
+import Item from "./Item";
 
 // import { ImPlus, ImCross } from "react-icons/im";
 // import CurrencyBlock from "./CurrencyBlock";
@@ -26,7 +27,7 @@ class ItemsList extends React.Component {
     render() {
         return (
             <div className="goods-list">
-                goods list
+                {this.props.items.map(item => (<Item key={item.id} item={item}/>))}
             </div>
         );
     }
