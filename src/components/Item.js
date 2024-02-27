@@ -15,15 +15,17 @@ class Item extends React.Component {
 
     render() {
         return (
-            <div className=''>
-                <div className="item__img"> </div>
+            <a href="#" className='item'>
+                <div className="item__img"> 
+                    {this.props.item.img ? <img src={this.props.item.img}></img> : <span> Нет изображения</span>}
+                </div>
                 <div className="item__desription">
-                    <h3>{this.props.item.product}</h3>
+                    <h3 className="item__desription-header" >{this.props.item.product}</h3>
                     {this.props.item.brand && <p>Бренд: {this.props.item.brand}</p>}
-                    {this.props.item.price && <p>{this.props.item.price} ₽</p>}
+                    {this.props.item.price && <p className="item__desription-price">{this.props.item.price} ₽</p>}
                     
                 </div>
-            </div>
+            </a>
         );
     }
 }

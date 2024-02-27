@@ -1,8 +1,7 @@
 
-
-/*# sourceMappingURL=style.sass.map */
-
 @import normalize
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap')
 
 // @font-face 
 //     font-family: 'Roboto'
@@ -10,9 +9,11 @@
 //     font-style: normal
 //     font-weight: 700
 
-
 // $header-font: Roboto
 // $primary-color: #FFFBF5
+$primary-font-color: #000
+$secondary-font-color: rgb(165, 40, 56)
+
 // $second-color: #F0B94D
 // $background-color: #37343A
 // $block-color: #636362
@@ -21,25 +22,25 @@
 // $basic-font-size: 2.4rem
 // $basic-font-size-mobile: 1.6rem
 
-* 
+*
     margin: 0
     padding: 0
     box-sizing: border-box
 
+html
+    font-size: 1px
 
-html 
-    font-size: 10px
+body
+    font-size: 14rem
+    font-family: 'Open Sans', sans-serif
+    // background-color: $background-color
+    color: $primary-font-color
 
-
-// body
-//     background-color: $background-color
-//     font-family: 'Inter', sans-serif
-//     color: $primary-color
-
-// a
-//     color: $primary-color
-//     text-decoration: none
-
+a
+    // color: $primary-color
+    text-decoration: none
+    cursor: pointer
+    color: $primary-font-color
 
 // h1
 //     padding-bottom: 2.7rem
@@ -47,20 +48,17 @@ html
 //     font-family: $header-font
 //     font-size: 6.6rem
 
-
 // h2 
 //     padding-bottom: 2.7rem
 
 //     font-family: $header-font
 //     font-size: 5.8rem
 
-
 // h3 
 //     padding-bottom: 2.7rem
 
 //     font-family: $header-font
 //     font-size: 3.4rem
-
 
 img
     width: 100%
@@ -85,7 +83,7 @@ img
 //     color: $primary-color
 
 @media (max-width: 82em)
-    html 
+    html
         font-size: 0.7692307692307692vw
 
     .container
@@ -100,7 +98,7 @@ img
 //         text-decoration: underline
 
 @media (max-width: 48em)
-    html 
+    html
         font-size: 3.125vw
 
     .container
@@ -116,12 +114,10 @@ img
 
     //     font-size: 2.3rem
 
-
     // h3 
     //     padding-bottom: 2.7rem
 
     //     font-size: 1.4rem
-
 
     // button
     //     padding: 0.7rem 1.6rem
@@ -130,6 +126,5 @@ img
 
     //     border-radius: 0.8rem
 
-// @import blocks/header
-
-
+@import components/item
+@import components/items_list

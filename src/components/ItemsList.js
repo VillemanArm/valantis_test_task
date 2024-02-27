@@ -26,7 +26,7 @@ class ItemsList extends React.Component {
 
     render() {
         return (
-            <div className="goods-list">
+            <div className="items-list">
                 {this.props.items.map(item => (<Item key={item.id} item={item}/>))}
             </div>
         );
