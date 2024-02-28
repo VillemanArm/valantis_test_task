@@ -18,7 +18,7 @@ class App extends React.Component {
             items: [],
             pages: 0,
             currentPage: 1,
-
+            searchQuery: '',
         };
 
         
@@ -26,6 +26,7 @@ class App extends React.Component {
         this.getItems = this.getItems.bind(this);
         this.generateHashKey = this.generateHashKey.bind(this);
         this.setCurrentPage = this.setCurrentPage.bind(this);
+        this.setSearchQuery = this.setSearchQuery.bind(this);
 
     }
 
@@ -117,10 +118,16 @@ class App extends React.Component {
         return md5(`${this.state.password}_${timeStamp}`)
     }
 
+    setSearchQuery(searchQuery) {
+        console.log(searchQuery)
+
+
+    }
+
     render () {
         return (
             <React.StrictMode>
-                <Header />
+                <Header searchFunc={this.setSearchQuery}/>
                 <main>
                     <ItemsList 
                     items={this.state.items.slice((this.state.currentPage - 1) * 50, this.state.currentPage * 50)}
