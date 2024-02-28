@@ -25,6 +25,7 @@ class App extends React.Component {
         this.getIdList = this.getIdList.bind(this);
         this.getItems = this.getItems.bind(this);
         this.generateHashKey = this.generateHashKey.bind(this);
+        this.setCurrentPage = this.setCurrentPage.bind(this);
 
     }
 
@@ -40,22 +41,27 @@ class App extends React.Component {
         if (prevState.pages !== this.state.pages) {
             this.getItems();
         }
+        if (this.state.currentPage > this.state.pages) {
+            this.setState({pages: this.state.currentPage})
+        }
 
     }
 
     async getIdList() {
         const body = { 	
             "action": "get_ids",
-	        // "params": {"offset": 0, "limit": 1963} 
+	        // "params": {"offset": 0, "limit": 200} 
         }
 
         await axios
             .post(this.state.url, body, {headers: this.state.headers})
             .then(async (res) => {
-                const idList = new Set([...res.data.result])
-                await this.setState({ idList: [...idList] })
+                await this.setState({ idList: [...res.data.result] })
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                console.log(err)
+                this.getIdList()
+            });
     }
 
     async getItems() {    
@@ -76,7 +82,10 @@ class App extends React.Component {
                     const uniqueItems = this.filterUniqueItems(res.data.result)
                     await this.setState({ items: [...this.state.items, ...uniqueItems] })
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    console.log(err)
+                    this.getItems()
+                });
         }
     }
 
@@ -94,6 +103,12 @@ class App extends React.Component {
         return uniqueItems
     }
 
+    setCurrentPage(number) {
+        let newCurrentPage = this.state.currentPage + number;
+        if (newCurrentPage < 1) {newCurrentPage = 1};
+
+        this.setState({currentPage: newCurrentPage});
+    }
 
 
     generateHashKey() {
@@ -107,7 +122,11 @@ class App extends React.Component {
             <React.StrictMode>
                 <Header />
                 <main>
-                    <ItemsList items={this.state.items.slice((this.state.currentPage - 1) * 50, this.state.currentPage * 50)}/>
+                    <ItemsList 
+                    items={this.state.items.slice((this.state.currentPage - 1) * 50, this.state.currentPage * 50)}
+                    currentPage={this.state.currentPage}
+                    setCurrentPage={this.setCurrentPage}
+                    />
                 </main>
                 {/* <Footer /> */}
             </React.StrictMode>

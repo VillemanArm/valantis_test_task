@@ -1,14 +1,19 @@
 import React from "react";
 import Logo from './Logo'
+import AppInput from './UI/AppInput'
 
 class Header extends React.Component {
     render() {
         return (
-            <div>
-                <div className="container">
+            <header>
+                <div className="container header">
                     <Logo />
+                    <AppInput 
+                    changeFunc="setSearchQuery"
+                    placeholder="⌕"
+            />
                 </div>
-            </div>
+            </header>
         )
     }
 }
