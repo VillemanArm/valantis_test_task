@@ -9,7 +9,7 @@ class Header extends React.Component {
                 <div className="container header">
                     <Logo />
                     <AppInput 
-                    changeFunc="setSearchQuery"
+                    // changeFunc="setSearchQuery"
                     placeholder="⌕"
             />
                 </div>

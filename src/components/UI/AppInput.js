@@ -21,7 +21,7 @@ class AppInput extends React.Component {
                 type="text" 
                 className='app-input' 
                 placeholder={this.props.placeholder}
-                onInput={(event) => {this.props.changeFunc(event.target.value)}}
+                // onInput={(event) => {this.props.changeFunc(event.target.value)}}
             >
 
             </input>
