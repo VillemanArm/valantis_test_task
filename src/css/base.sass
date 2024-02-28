@@ -10,11 +10,12 @@
 //     font-weight: 700
 
 // $header-font: Roboto
-// $primary-color: #FFFBF5
+$primary-color: #FFF
+$secondary-color: rgb(165, 40, 56)
+
 $primary-font-color: #000
 $secondary-font-color: rgb(165, 40, 56)
 
-// $second-color: #F0B94D
 // $background-color: #37343A
 // $block-color: #636362
 // $dark-background-color: #333036
@@ -66,21 +67,35 @@ img
     object-fit: contain
 
 .container
-    width: 120em
+    width: 1000rem
     margin-left: auto
     margin-right: auto
 
-// button
-//     display: block
-//     padding: 1.4rem 3.1rem
-//     box-sizing: border-box
+button
+    display: flex
+    align-items: center
+    padding: 5rem 20rem
+    box-sizing: border-box
 
-//     font-size: 2.7rem
+    font-size: 16rem
 
-//     background-color: $second-color
-//     border: 0.3rem solid $second-color
-//     border-radius: 1.1rem
-//     color: $primary-color
+    background-color: $secondary-color
+    border: 2rem solid $secondary-color
+    border-radius: 8rem
+    color: $primary-color
+    cursor: pointer
+
+    &>svg
+        width: 24rem
+        height: 16rem
+
+        fill: $primary-color
+
+    &:hover
+        background-color: transparent
+        color: $secondary-color
+        &>svg
+            fill: $secondary-color
 
 @media (max-width: 82em)
     html

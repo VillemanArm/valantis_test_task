@@ -1,10 +1,13 @@
 import React from "react";
+import Logo from './Logo'
 
 class Header extends React.Component {
     render() {
         return (
             <div>
-                <h1>Valantis</h1> 
+                <div className="container">
+                    <Logo />
+                </div>
             </div>
         )
     }

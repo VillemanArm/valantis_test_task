@@ -1,7 +1,7 @@
 import React from "react";
 import Item from "./Item";
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 
-// import { ImPlus, ImCross } from "react-icons/im";
 // import CurrencyBlock from "./CurrencyBlock";
 // import CurrencyCalculator from "./CurrencyCalculator";
 
@@ -22,13 +22,18 @@ class ItemsList extends React.Component {
 
     
 
-    
-
     render() {
         return (
-            <div className="items-list">
-                {this.props.items.map(item => (<Item key={item.id} item={item}/>))}
+            <div className="items-list__wrapper container">
+                <div className="items-list__management">
+                    <button className="items-list__button"><FaArrowLeft /></button>
+                    <button className="items-list__button"><FaArrowRight /></button>
+                </div>
+                <div className="items-list">
+                    {this.props.items.map(item => (<Item key={item.id} item={item}/>))}
+                </div>
             </div>
+
         );
     }
 }
