@@ -10,6 +10,7 @@ class Header extends React.Component {
             <header>
                 <div className="container header">
                     <Logo />
+                    <a href="https://insight-webstudio.ru/">Другие мои работы можно посмотреть на моем сайте</a>
                     <AppInput 
                     changeFunc={this.props.searchFunc}
                     placeholder="⌕"

@@ -4,7 +4,6 @@ import axios from "axios";
 import { md5 } from 'js-md5'
 import Header from './components/Header'
 import ItemsList from './components/ItemsList';
-// import Footer from './components/Footer'
 
 class App extends React.Component {
     constructor(props) {
@@ -33,43 +32,59 @@ class App extends React.Component {
 
     async componentDidMount() {
         await this.setState({ headers: { 'X-Auth': this.generateHashKey() }})
-        await this.getIdList();
-        this.setState({pages: this.state.pages + 1})
+        const requestBody = {	
+            "action": "get_ids",
+	        // "params": {"offset": 0, "limit": 200}    
+        }
+        await this.getIdList(requestBody);
 
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.pages !== this.state.pages) {
+    async componentDidUpdate(prevProps, prevState) {
+        if (prevState.idList.length !== this.state.idList.length 
+            || prevState.pages !== this.state.pages ) {
             this.getItems();
         }
         if (this.state.currentPage > this.state.pages) {
             this.setState({pages: this.state.currentPage})
         }
+        if (prevState.searchQuery !== this.state.searchQuery) {
+            let requestBody
+            if (this.state.searchQuery) {
+                requestBody = { 	
+                    "action": "filter",
+                    "params": {"product": this.state.searchQuery}
+                }
+            } else {
+                requestBody = {	
+                    "action": "get_ids",
+	                // "params": {"offset": 0, "limit": 200}    
+                }
+            }
 
+            await this.getIdList(requestBody);          
+            await this.setState({items: []})
+            await this.setState({pages: 0})
+            await this.setState({currentPage: 1})
+        }
     }
 
-    async getIdList() {
-        const body = { 	
-            "action": "get_ids",
-	        // "params": {"offset": 0, "limit": 200} 
-        }
-
+    async getIdList(body) {
         await axios
             .post(this.state.url, body, {headers: this.state.headers})
             .then(async (res) => {
-                await this.setState({ idList: [...res.data.result] })
+                await this.setState({idList: []}, () => { this.setState({ idList: [...res.data.result]}) })
             })
             .catch((err) => {
                 console.log(err)
-                this.getIdList()
+                this.getIdList(body)
             });
     }
 
     async getItems() {    
-
         const limit = 60
         const startQuery = this.state.items.length
-        const finishQuery = this.state.pages * limit
+        const finishQuery = (this.state.pages + 1) * limit
 
         if (startQuery < finishQuery) {
             const body = { 	
@@ -80,8 +95,11 @@ class App extends React.Component {
             await axios
                 .post(this.state.url, body, {headers: this.state.headers})
                 .then(async (res) => {
-                    const uniqueItems = this.filterUniqueItems(res.data.result)
-                    await this.setState({ items: [...this.state.items, ...uniqueItems] })
+                    const oldItems = this.state.items
+                    const newItems = this.filterUniqueItems([...oldItems, ...res.data.result])
+                    await this.setState({ items: [] }, () => {
+                        this.setState({items: newItems})
+                    })
                 })
                 .catch((err) => {
                     console.log(err)
@@ -119,9 +137,7 @@ class App extends React.Component {
     }
 
     setSearchQuery(searchQuery) {
-        console.log(searchQuery)
-
-
+         this.setState({searchQuery})
     }
 
     render () {
@@ -135,7 +151,6 @@ class App extends React.Component {
                     setCurrentPage={this.setCurrentPage}
                     />
                 </main>
-                {/* <Footer /> */}
             </React.StrictMode>
         )
     }
