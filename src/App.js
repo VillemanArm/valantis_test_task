@@ -12,12 +12,13 @@ class App extends React.Component {
          this.state = {
             password: 'Valantis',
             idList: [],
-            url: `http://api.valantis.store:40000/`,
+            url: `https://api.valantis.store:41000/`,
             headers: {},
             items: [],
             pages: 0,
             currentPage: 1,
             searchQuery: '',
+            requestsCounter: 0,
         };
 
         
@@ -74,10 +75,14 @@ class App extends React.Component {
             .post(this.state.url, body, {headers: this.state.headers})
             .then(async (res) => {
                 await this.setState({idList: []}, () => { this.setState({ idList: [...res.data.result]}) })
+                this.setState({requestsCounter: 0})
             })
-            .catch((err) => {
+            .catch(async (err) => {
                 console.log(err)
-                this.getIdList(body)
+                await this.setState({requestsCounter: this.state.requestsCounter + 1})
+                if (this.state.requestsCounter < 10) {
+                    this.getIdList(body)
+                }
             });
     }
 
@@ -100,10 +105,14 @@ class App extends React.Component {
                     await this.setState({ items: [] }, () => {
                         this.setState({items: newItems})
                     })
+                    this.setState({requestsCounter: 0})
                 })
-                .catch((err) => {
+                .catch(async (err) => {
                     console.log(err)
-                    this.getItems()
+                    await this.setState({requestsCounter: this.state.requestsCounter + 1})
+                    if (this.state.requestsCounter < 10) {
+                        this.getItems()
+                    }
                 });
         }
     }
