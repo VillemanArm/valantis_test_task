@@ -1,21 +1,9 @@
 import React from 'react';
 class Item extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-
-        };
-
-        // this.func = this.func.bind(this);
-
-    }
-
-
 
     render() {
         return (
-            <a href="#" className='item'>
+            <a className='item'>
                 <div className="item__img"> 
                     {this.props.item.img ? <img src={this.props.item.img}></img> : <span> Нет изображения</span>}
                 </div>

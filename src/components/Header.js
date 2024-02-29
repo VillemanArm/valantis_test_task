@@ -4,7 +4,6 @@ import AppInput from './UI/AppInput'
 
 class Header extends React.Component {
 
-
     render() {
         return (
             <header>
@@ -12,8 +11,8 @@ class Header extends React.Component {
                     <Logo />
                     <a href="https://insight-webstudio.ru/">Другие мои работы можно посмотреть на моем сайте</a>
                     <AppInput 
-                    changeFunc={this.props.searchFunc}
-                    placeholder="⌕"
+                        changeFunc={this.props.searchFunc}
+                        placeholder="⌕"
             />
                 </div>
             </header>

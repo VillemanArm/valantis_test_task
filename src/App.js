@@ -129,7 +129,6 @@ class App extends React.Component {
         this.setState({currentPage: newCurrentPage});
     }
 
-
     generateHashKey() {
         let timeStamp = new Date()
         timeStamp = timeStamp.toLocaleDateString().split('.').reverse().join('')
@@ -146,9 +145,9 @@ class App extends React.Component {
                 <Header searchFunc={this.setSearchQuery}/>
                 <main>
                     <ItemsList 
-                    items={this.state.items.slice((this.state.currentPage - 1) * 50, this.state.currentPage * 50)}
-                    currentPage={this.state.currentPage}
-                    setCurrentPage={this.setCurrentPage}
+                        items={this.state.items.slice((this.state.currentPage - 1) * 50, this.state.currentPage * 50)}
+                        currentPage={this.state.currentPage}
+                        setCurrentPage={this.setCurrentPage}
                     />
                 </main>
             </React.StrictMode>
